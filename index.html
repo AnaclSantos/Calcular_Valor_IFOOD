@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preço de marmitas no delivery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/*
+VOICE: prática, de balcão — uma ferramenta de trabalho para dona de restaurante pequeno.
+IDEA: a comanda/etiqueta de preço colada na tampa da marmita.
+PICTURE: as marmitas desenhadas em tamanhos proporcionais ao peso, cada uma com seu preço grande no app.
+COLOUR and TYPE: amarelo-cúrcuma dominante, tinta quase preta, tomate como acento; Archivo + Inter.
+LAYOUT: faixa amarela com título; entradas à esquerda, resultado vivo à direita; comparativo de apps embaixo.
+*/
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#16130f);--panel:light-dark(#f6f3ee,#211d18);--ink:light-dark(#1d1a16,#f3eee6);--mut:light-dark(#6a6258,#b3aa9d);
+--line:light-dark(#e3ddd3,#3a332b);--yel:#f4b400;--yelInk:#1d1a16;--tom:light-dark(#d63a22,#ff6b4f);--ok:light-dark(#1f7a4d,#5cc98f);
+--kraft:light-dark(#c99a5b,#a77a40);--lid:light-dark(#e9e4dc,#4a433a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Archivo,Inter,sans-serif;margin:0;line-height:1.05;text-wrap:balance}
+.band{padding:clamp(28px,4vw,56px) max(5vw,16px)}
+.top{background:var(--yel);color:var(--yelInk)}
+.top h1{font-size:clamp(32px,5vw,50px);font-weight:800;max-width:18ch}
+.top p{margin:12px 0 0;max-width:62ch;font-size:17px}
+.wrap{max-width:1240px;margin:0 auto}
+.grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
+@media(max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--panel);border-radius:14px;padding:18px}
+.panel h2{font-size:20px;margin:0 0 4px}
+.sec{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}
+.sec:first-child{border:0;margin:0;padding:0}
+.hint{font-size:13px;color:var(--mut);margin:2px 0 8px}
+label{display:block;font-size:14px;font-weight:600;margin:10px 0 4px}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+input[type=number],input[type=text]{width:100%;font:16px Inter,sans-serif;padding:10px 12px;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+input:focus-visible,button:focus-visible{outline:3px solid var(--tom);outline-offset:2px}
+.unit{position:relative}.unit span{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--mut);pointer-events:none}
+.unit input{padding-right:46px}
+.sizes{display:grid;gap:8px}
+.size{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr) 44px;gap:6px;align-items:end}
+.size label{margin-top:0;font-size:12px;font-weight:500;color:var(--mut)}
+button{font:600 15px Inter,sans-serif;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;padding:0 14px}
+button.del{padding:0;font-size:20px;color:var(--mut)}
+button.add{margin-top:10px;width:100%;border-style:dashed}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px}
+.tabs button{border-radius:999px;font-size:14px}
+.tabs button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.check{display:flex;gap:10px;align-items:center;font-weight:500;min-height:44px;margin:6px 0 0}
+.check input{width:20px;height:20px;accent-color:var(--tom)}
+.reshead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px;margin-bottom:14px}
+.reshead h2{font-size:clamp(24px,3vw,32px)}
+.reshead p{margin:4px 0 0;color:var(--mut)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.pic{height:96px;display:flex;align-items:flex-end;justify-content:center}
+.card h3{font-size:17px;font-weight:700}
+.card .g{color:var(--mut);font-size:14px;font-weight:500}
+.price{font-family:Archivo,sans-serif;font-weight:800;font-size:clamp(34px,4vw,44px);line-height:1;white-space:nowrap;color:var(--tom)}
+.price small{font-size:.45em;font-weight:700;color:var(--ink);margin-right:4px}
+.bar{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--line)}
+.bar i{display:block;height:100%}
+.legend{display:grid;gap:3px;font-size:13px}
+.legend div{display:flex;justify-content:space-between;gap:8px}
+.legend b{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}
+.meta{font-size:13px;color:var(--mut);border-top:1px dashed var(--line);padding-top:8px}
+.warn{color:var(--tom);font-weight:600}
+.cmp h2{font-size:clamp(24px,3vw,32px);margin-bottom:6px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:13px;color:var(--mut);font-weight:600}
+td.best{color:var(--ok);font-weight:700}
+.notes{font-size:14px;color:var(--mut);max-width:80ch}
+.notes li{margin:4px 0}
+.toast{font-size:14px;color:var(--ok);margin-left:8px}
+@media(prefers-reduced-motion:no-preference){.price{transition:color .2s}.bar i{transition:width .35s ease}}
+</style>
+</head>
+<body>
+<header class="band top"><div class="wrap">
+<h1>Quanto cobrar por marmita no app de entrega</h1>
+<p>Informe o custo da comida e das embalagens, escolha o app e veja o preço de cada tamanho já com comissão, taxa de pagamento, entrega, imposto e a margem que você quer ganhar.</p>
+</div></header>
+
+<main class="band"><div class="wrap grid">
+<aside class="panel" aria-label="Dados de custo">
+  <div class="sec">
+    <h2>Custos da cozinha</h2>
+    <p class="hint">Valores de exemplo — troque pelos números do restaurante.</p>
+    <label for="custoKg">Custo da comida pronta por kg</label>
+    <div class="unit"><input id="custoKg" type="number" step="0.01" min="0"><span>R$/kg</span></div>
+    <p class="hint">Ingredientes + gás + mão de obra divididos pelos kg produzidos.</p>
+    <label for="extras">Itens por pedido (sacola, talher, etiqueta)</label>
+    <div class="unit"><input id="extras" type="number" step="0.01" min="0"><span>R$</span></div>
+  </div>
+  <div class="sec">
+    <h2>Tamanhos</h2>
+    <p class="hint">Peso de comida e custo da embalagem de cada marmita.</p>
+    <div class="sizes" id="sizes"></div>
+    <button class="add" id="addSize" type="button">+ Adicionar tamanho</button>
+  </div>
+  <div class="sec">
+    <h2>Lucro e impostos</h2>
+    <div class="row2">
+      <div><label for="margem">Margem de lucro</label><div class="unit"><input id="margem" type="number" step="0.5" min="0"><span>%</span></div></div>
+      <div><label for="imposto">Imposto (ex.: Simples)</label><div class="unit"><input id="imposto" type="number" step="0.1" min="0"><span>%</span></div></div>
+    </div>
+    <label class="check"><input id="arred" type="checkbox"> Arredondar para R$ x,90</label>
+  </div>
+  <div class="sec">
+    <h2>Aplicativo</h2>
+    <p class="hint">Taxas iniciais de referência pública; confira no contrato da loja.</p>
+    <div class="tabs" id="tabsCfg" role="group" aria-label="Escolher aplicativo"></div>
+    <div id="platCfg"></div>
+  </div>
+</aside>
+
+<section aria-live="polite">
+  <div class="reshead">
+    <div><h2 id="resTitle">Preços no app</h2><p id="resSub"></p></div>
+    <div><button type="button" id="copy">Copiar preços</button><span class="toast" id="toast"></span></div>
+  </div>
+  <div class="tabs" id="tabsRes" role="group" aria-label="Aplicativo exibido"></div>
+  <div class="cards" id="cards" style="margin-top:12px"></div>
+
+  <div class="cmp" style="margin-top:40px">
+    <h2>Comparativo entre apps</h2>
+    <p class="hint">Preço sugerido por tamanho em cada app. Em verde, o app que permite o menor preço mantendo a sua margem.</p>
+    <div class="scroll"><table id="cmp"></table></div>
+  </div>
+
+  <div style="margin-top:32px">
+    <h3 style="font-size:18px;margin-bottom:6px">Como o cálculo funciona</h3>
+    <ul class="notes">
+      <li><b>Custo fixo do pedido</b> = comida (custo/kg × peso) + embalagem + itens do pedido + entrega paga pela loja + mensalidade do app dividida pelos pedidos do mês.</li>
+      <li><b>Preço</b> = custo fixo ÷ (1 − comissão − taxa de pagamento − cupom − imposto − margem). Assim, os percentuais incidem sobre o preço final, como os apps cobram.</li>
+      <li><b>Preço de balcão</b> considera só comida, embalagem, itens, imposto e margem — serve para ver quanto o app encarece a marmita.</li>
+      <li>Taxas mudam com frequência e variam por cidade e contrato (inclusive promoções de isenção). Use os valores do painel do parceiro da sua amiga.</li>
+    </ul>
+  </div>
+</section>
+</div></main>
+
+<script>
+{
+const DEF={
+  custoKg:28, extras:0.8, margem:20, imposto:6, arred:true, sel:'ifb',
+  sizes:[{n:'Pequena',g:350,emb:0.9},{n:'Média',g:500,emb:1.1},{n:'Grande',g:750,emb:1.4}],
+  plats:[
+    {id:'ifb',n:'iFood Básico',com:12,pag:3.2,desc:0,ent:4,mens:110,ped:300,tip:'Loja faz a entrega. Informe o custo do motoboy menos a taxa de entrega cobrada do cliente.'},
+    {id:'ife',n:'iFood Entrega',com:23,pag:3.2,desc:0,ent:0,mens:150,ped:300,tip:'Entregador do iFood. Normalmente sem custo extra de entrega para a loja.'},
+    {id:'99e',n:'99Food (entrega 99)',com:8.9,pag:3.2,desc:0,ent:0,mens:0,ped:200,tip:'Entregador da 99. Se houver custo logístico cobrado da loja, coloque em “Entrega paga pela loja”.'},
+    {id:'99p',n:'99Food (entrega própria)',com:10.9,pag:3.2,desc:0,ent:4,mens:0,ped:200,tip:'Loja faz a entrega. Informe o custo do motoboy menos a taxa cobrada do cliente.'}
+  ]};
+const KEY='calc-marmitas-v1';
+let S;
+try{S=JSON.parse(localStorage.getItem(KEY))||null}catch(e){S=null}
+if(!S||!S.plats||!S.sizes)S=JSON.parse(JSON.stringify(DEF));
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const brl=v=>isFinite(v)?v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}):'—';
+const num=v=>{const x=parseFloat(String(v).replace(',','.'));return isFinite(x)?x:0};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const COL={comida:'#c99a5b',emb:'#8a7f72',app:'#d63a22',ent:'#f4b400',imp:'#5b6cc2',lucro:'#1f7a4d'};
+
+function calc(p,s){
+  const comida=S.custoKg*s.g/1000, emb=s.emb, ext=S.extras, ent=p.ent, mens=p.ped>0?p.mens/p.ped:0;
+  const fixo=comida+emb+ext+ent+mens;
+  const pct=(p.com+p.pag+p.desc+S.imposto+S.margem)/100;
+  if(pct>=0.97)return{err:true};
+  let preco=fixo/(1-pct);
+  if(S.arred)preco=Math.ceil(preco-0.9+1e-9)+0.9;
+  const app=preco*(p.com+p.pag+p.desc)/100, imp=preco*S.imposto/100;
+  const lucro=preco-fixo-app-imp;
+  const balcPct=(S.imposto+S.margem)/100;
+  let balcao=(comida+emb+ext)/(1-balcPct);
+  if(S.arred)balcao=Math.ceil(balcao-0.9+1e-9)+0.9;
+  return{preco,comida,emb:emb+ext,ent:ent+mens,app,imp,lucro,balcao,margemReal:lucro/preco,custoKgVenda:preco/(s.g/1000)};
+}
+
+function marmita(g,max){
+  const k=Math.sqrt(Math.max(g,50)/max), w=Math.round(150*k), h=Math.round(90*k);
+  return `<svg width="${w}" height="${h}" viewBox="0 0 150 90" aria-hidden="true">
+  <ellipse cx="75" cy="84" rx="64" ry="5" fill="currentColor" opacity=".12"/>
+  <path d="M14 30 H136 L126 80 Q125 84 120 84 H30 Q25 84 24 80 Z" fill="var(--kraft)"/>
+  <path d="M14 30 H136 L134 40 H16 Z" fill="#000" opacity=".12"/>
+  <path d="M30 30 Q42 16 56 26 Q66 12 80 24 Q94 12 104 26 Q116 18 122 30 Z" fill="var(--tom)" opacity=".85"/>
+  <circle cx="48" cy="24" r="6" fill="#2f8a4f"/><circle cx="96" cy="22" r="5" fill="#f4b400"/>
+  <rect x="8" y="24" width="134" height="8" rx="4" fill="var(--lid)"/>
+  <rect x="52" y="48" width="46" height="18" rx="3" fill="#fff" opacity=".85"/>
+  <text x="75" y="61" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1d1a16">${g}g</text></svg>`;
+}
+
+function renderInputs(){
+  for(const k of ['custoKg','extras','margem','imposto'])$(k).value=S[k];
+  $('arred').checked=!!S.arred;
+  $('sizes').innerHTML=S.sizes.map((s,i)=>`<div class="size">
+    <div><label for="sn${i}">Nome</label><input id="sn${i}" type="text" data-sz="${i}" data-f="n" value="${esc(s.n)}"></div>
+    <div><label for="sg${i}">Peso (g)</label><input id="sg${i}" type="number" min="1" step="10" data-sz="${i}" data-f="g" value="${s.g}"></div>
+    <div><label for="se${i}">Embalagem R$</label><input id="se${i}" type="number" min="0" step="0.05" data-sz="${i}" data-f="emb" value="${s.emb}"></div>
+    <button class="del" type="button" data-del="${i}" aria-label="Remover ${esc(s.n)}">×</button></div>`).join('');
+  renderPlatCfg();
+}
+function tabs(el,act){
+  el.innerHTML=S.plats.map(p=>`<button type="button" data-p="${p.id}" aria-pressed="${p.id===S.sel}">${esc(p.n)}</button>`).join('');
+}
+function renderPlatCfg(){
+  tabs($('tabsCfg'));
+  const p=S.plats.find(x=>x.id===S.sel)||S.plats[0];
+  const f=(id,lab,u,step)=>`<div><label for="pf_${id}">${lab}</label><div class="unit"><input id="pf_${id}" type="number" min="0" step="${step}" data-pf="${id}" value="${p[id]}"><span>${u}</span></div></div>`;
+  $('platCfg').innerHTML=`<p class="hint">${esc(p.tip)}</p>
+   <div class="row2">${f('com','Comissão','%',0.1)}${f('pag','Taxa pagamento online','%',0.1)}</div>
+   <div class="row2">${f('ent','Entrega paga pela loja','R$',0.5)}${f('desc','Cupom bancado pela loja','%',0.5)}</div>
+   <div class="row2">${f('mens','Mensalidade do app','R$',10)}${f('ped','Pedidos/mês no app','ped.',10)}</div>`;
+}
+
+function renderResults(){
+  tabs($('tabsRes'));
+  const p=S.plats.find(x=>x.id===S.sel)||S.plats[0];
+  const max=Math.max(...S.sizes.map(s=>s.g),1);
+  $('resTitle').textContent='Preços no '+p.n;
+  $('resSub').textContent=`Comissão ${p.com}% + pagamento ${p.pag}% · margem alvo ${S.margem}%`;
+  $('cards').innerHTML=S.sizes.length?S.sizes.map(s=>{
+    const r=calc(p,s);
+    if(r.err)return `<div class="card"><h3>${esc(s.n)}</h3><p class="warn">As porcentagens somam quase 100%. Reduza a margem ou as taxas.</p></div>`;
+    const parts=[['comida','Comida',r.comida],['emb','Embalagem e itens',r.emb],['app','App (comissão, pagamento, cupom)',r.app],['ent','Entrega e mensalidade',r.ent],['imp','Imposto',r.imp],['lucro','Lucro',r.lucro]];
+    return `<article class="card">
+      <div class="pic">${marmita(s.g,max)}</div>
+      <h3>${esc(s.n)} <span class="g">· ${s.g} g</span></h3>
+      <div class="price"><small>R$</small>${r.preco.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
+      <div class="bar">${parts.map(([k,,v])=>`<i style="width:${Math.max(0,v/r.preco*100)}%;background:${COL[k]}"></i>`).join('')}</div>
+      <div class="legend">${parts.map(([k,l,v])=>`<div><span><span class="dot" style="background:${COL[k]}"></span>${l}</span><b>${brl(v)}</b></div>`).join('')}</div>
+      <div class="meta">Balcão: <b>${brl(r.balcao)}</b> · app ${r.balcao>0?'+'+Math.round((r.preco/r.balcao-1)*100)+'%':''}<br>Margem real ${(r.margemReal*100).toFixed(1)}% · ${brl(r.custoKgVenda)}/kg</div>
+    </article>`}).join(''):'<p class="hint">Adicione pelo menos um tamanho de marmita.</p>';
+  // comparativo
+  const head=`<thead><tr><th>Tamanho</th><th>Balcão</th>${S.plats.map(p=>`<th>${esc(p.n)}</th>`).join('')}</tr></thead>`;
+  const body=S.sizes.map(s=>{
+    const rs=S.plats.map(p=>calc(p,s));
+    const ok=rs.filter(r=>!r.err).map(r=>r.preco), min=ok.length?Math.min(...ok):null;
+    return `<tr><td>${esc(s.n)} (${s.g} g)</td><td>${brl(calc(S.plats[0],s).balcao)}</td>${rs.map(r=>r.err?'<td>—</td>':`<td class="${r.preco===min?'best':''}">${brl(r.preco)}</td>`).join('')}</tr>`}).join('');
+  $('cmp').innerHTML=head+'<tbody>'+body+'</tbody>';
+}
+function all(){save();renderResults()}
+
+renderInputs();renderResults();
+
+for(const k of ['custoKg','extras','margem','imposto'])$(k).addEventListener('input',e=>{S[k]=num(e.target.value);all()});
+$('arred').addEventListener('change',e=>{S.arred=e.target.checked;all()});
+$('sizes').addEventListener('input',e=>{const i=e.target.dataset.sz;if(i==null)return;const f=e.target.dataset.f;S.sizes[i][f]=f==='n'?e.target.value:num(e.target.value);all()});
+$('sizes').addEventListener('click',e=>{const i=e.target.dataset.del;if(i==null)return;S.sizes.splice(+i,1);renderInputs();all()});
+$('addSize').addEventListener('click',()=>{const last=S.sizes[S.sizes.length-1]||{g:400,emb:1};S.sizes.push({n:'Novo tamanho',g:last.g+150,emb:last.emb});renderInputs();all();const el=$('sn'+(S.sizes.length-1));el&&el.focus()});
+$('platCfg').addEventListener('input',e=>{const f=e.target.dataset.pf;if(!f)return;const p=S.plats.find(x=>x.id===S.sel);p[f]=num(e.target.value);all()});
+const pick=e=>{const id=e.target.dataset.p;if(!id)return;S.sel=id;renderPlatCfg();all()};
+$('tabsCfg').addEventListener('click',pick);$('tabsRes').addEventListener('click',pick);
+$('copy').addEventListener('click',async()=>{
+  const p=S.plats.find(x=>x.id===S.sel);
+  const txt=p.n+'\n'+S.sizes.map(s=>{const r=calc(p,s);return `${s.n} (${s.g} g): ${r.err?'—':brl(r.preco)}`}).join('\n');
+  try{await navigator.clipboard.writeText(txt);$('toast').textContent='Copiado!'}catch(e){$('toast').textContent='Não foi possível copiar'}
+  setTimeout(()=>$('toast').textContent='',2000);
+});
+}
+</script>
+</body>
+</html>
